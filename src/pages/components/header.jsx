@@ -1,11 +1,18 @@
 import styled from "styled-components"
-import profilepic from "../../assets/profilepic.png"
+import { UserContext } from "../../constants/usercontext";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header(){
+
+    const { userInfo } = useContext(UserContext);
+    
     return(
-        <HeaderDiv>
-            <h1>TrackIt</h1>
-            <img src={profilepic}></img>
+        <HeaderDiv data-test="header">
+            <Link to='/'>
+                <h1>TrackIt</h1>
+            </Link>
+            <img src={userInfo.image} alt="User Profile Image" data-test="avatar"></img>
         </HeaderDiv>
     )
 }
@@ -29,8 +36,14 @@ const HeaderDiv = styled.div`
         font-size: 39px;
     }
 
+    a{
+        text-decoration: none;
+    }
+
     img{
         width: 50px;
+        height: 50px;
         border-radius: 30px;
+        object-fit: cover;
     }
 `;

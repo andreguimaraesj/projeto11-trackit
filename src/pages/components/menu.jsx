@@ -1,27 +1,37 @@
 import styled from "styled-components"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { Link } from "react-router-dom";
+import { UserContext } from "../../constants/usercontext";
+import { useContext } from "react";
 
 export default function Menu(){
+    const {completedHabits} = useContext(UserContext);
     const percentage = 25;
     return(
-        <Menudiv>
-            <p>Hábitos</p>
-            <ProgressDiv>
-                <CircularProgressbar
-                    value={percentage}
-                    text={`Hoje`}
-                    background
-                    backgroundPadding={6}
-                    styles={buildStyles({
-                    backgroundColor: "#52B6FF",
-                    textColor: "#fff",
-                    pathColor: "#fff",
-                    trailColor: "transparent"
-                    })}
-                />
-            </ProgressDiv>
-            <p>Histórico</p>
+        <Menudiv data-test="menu">
+            <Link to='/habitos' data-test="habit-link">
+                <p>Hábitos</p>
+            </Link>
+            <Link to='/hoje' data-test="today-link">
+                <ProgressDiv>
+                    <CircularProgressbar
+                        value={completedHabits}
+                        text={`Hoje`}
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
+                        backgroundColor: "#52B6FF",
+                        textColor: "#fff",
+                        pathColor: "#fff",
+                        trailColor: "transparent"
+                        })}
+                    />
+                </ProgressDiv>
+            </Link>
+            <Link to='/historico' data-test="history-link">
+                <p>Histórico</p>
+            </Link>
         </Menudiv>
     )
 }
@@ -41,6 +51,10 @@ const Menudiv = styled.div`
         color: #52B6FF;
         font-size: 18px;
         cursor: pointer;
+    }
+
+    a{
+        text-decoration: none;
     }
 `;
 const ProgressDiv = styled.div`

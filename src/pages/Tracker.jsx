@@ -21,7 +21,6 @@ const TrackerPage = styled.div`
     height: 100vh;
     padding: 70px 10px 5px 0px;
 
-
     h2{
         font-size: 23px;
         color: #126BA5;

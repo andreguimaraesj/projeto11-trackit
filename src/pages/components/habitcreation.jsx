@@ -1,27 +1,91 @@
 import styled from "styled-components"
+import { useState } from "react";
+import axios from "axios";
+import { BASEURL } from "../../constants/urls";
+import { UserContext } from "../../constants/usercontext";
+import { useContext } from "react";
 
-export default function HabitCreation(){
+export default function HabitCreation({setHabitCreationOn}){
+    const isVisible = setHabitCreationOn;
+    const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+    const [habitName, setHabitName] = useState("");
+    const [habitDays, setHabitDays] = useState([]);
+    const { userInfo } = useContext(UserContext);
+
+    function selectionDays(e) {
+        const day = parseInt(e.target.id);
+        if (habitDays.includes(day)) {
+            setHabitDays(habitDays.filter((d) => d !== day));
+        } else {
+            setHabitDays([...habitDays, day]);
+        }
+    }
+
+    function newHabit(e){
+        e.preventDefault();
+
+        if (habitDays.length === 0){
+            alert("Selecione os dias do hábito primeiro!");
+            return;
+        }
+        const habit = {
+            name: habitName,
+            days: habitDays
+        }
+        const config = {
+            headers: {
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        }
+    
+        console.log(habit);
+    
+        axios.post(`${BASEURL}/habits`, habit, config)
+        .then(resp =>{
+            setHabitName("");
+            setHabitDays([]);
+            isVisible(false);
+        })
+        .catch(error =>{
+            console.log(error.response.data.message)
+            alert(error.response.data.message)
+            })
+    }
     return(
-        <CreationDiv>
-            <input placeholder="nome do hábito" />
+        <CreationDiv onSubmit={newHabit} data-test="habit-create-container">
+            <input
+                required
+                type="text"
+                id="habit-name"
+                value={habitName}
+                onChange={(e) => setHabitName(e.target.value)}
+                placeholder="nome do hábito"
+                data-test="habit-name-input"
+            />
             <SelecionarDias>
-                <button>D</button>
-                <button>S</button>
-                <button>T</button>
-                <button>Q</button>
-                <button>Q</button>
-                <button>S</button>
-                <button>S</button>
+            {weekDays.map((day, index) => {
+                return (
+                        <button
+                            type="button"
+                            key={index}
+                            id={index}
+                            className={habitDays.includes(index) ? "selected" : ""}
+                            onClick={(e) => selectionDays(e)}
+                            data-test="habit-day"
+                        >{day}
+                        </button>
+                );
+            })}
             </SelecionarDias>
             <CreationButtons>
-                <p>Cancelar</p>
-                <button>Salvar</button>
+                <p onClick={ ()=> isVisible(false)} data-test="habit-create-cancel-btn">Cancelar</p>
+                <button type="submit" data-test="habit-create-save-btn">Salvar</button>
             </CreationButtons>
         </CreationDiv>
         )
 }
 
-const CreationDiv = styled.div`
+const CreationDiv = styled.form`
     width: 90%;
     background: #FFFFFF;
     border-radius: 5px;
@@ -60,6 +124,12 @@ const SelecionarDias = styled.div`
 
         :focus{
             outline: none;
+        }
+
+        &.selected {
+            background-color: #CFCFCF;
+            border-color: #CFCFCF;
+            color: #FFFFFF;
         }
     }
 `

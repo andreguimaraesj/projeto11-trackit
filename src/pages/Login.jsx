@@ -1,18 +1,54 @@
-import React from "react"
+import React, { useState, useContext } from "react"
 import logo from "../assets/Group8.png"
 import styled from "styled-components"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
+import { BASEURL } from "../constants/urls";
+import { UserContext } from "../constants/usercontext"
 
 export default function Login(){
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { userInfo, setUserInfo } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    function entrar(e){
+        e.preventDefault();
+        axios.post(`${BASEURL}/auth/login`,{email: email,password: password} )
+        .then(resp =>{
+            console.log(resp)
+            setUserInfo(resp.data);
+            navigate(`/hoje`);
+        })
+        .catch(error =>{
+            console.log(error)
+            alert("Usuário ou senha inválida!")
+        })
+    }
     return(
         <>
         <Logo src={logo}></Logo>
-        <FormsDiv>
-            <input placeholder="email" />
-            <input placeholder="senha" />
-            <button type="submit">Entrar</button>
+        <FormsDiv onSubmit={entrar}>
+            <input
+                required
+                id='email'
+                type="email"
+                placeholder="email"
+                data-test="email-input"
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+                required
+                id='senha'
+                type="password"
+                placeholder="senha"
+                data-test="password-input"
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit" data-test="login-btn">Entrar</button>
         </FormsDiv>
-        <Link>
-            <p>Não tem uma conta? Cadastre-se!</p>
+        <Link to='/cadastro' data-test="signup-link">
+            <LinkText>Não tem uma conta? Cadastre-se!</LinkText>
         </Link>
         </>
     )
@@ -61,8 +97,7 @@ const FormsDiv = styled.form`
         }
     }
 `;
-const Link = styled.div`
-    p{
+const LinkText = styled.p`
         font-weight: 400;
         font-size: 14px;
         text-align: center;
@@ -70,5 +105,4 @@ const Link = styled.div`
 
         color: #52B6FF;
         cursor: pointer;
-    }
 `;

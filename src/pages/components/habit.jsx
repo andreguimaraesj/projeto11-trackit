@@ -1,20 +1,24 @@
 import styled from "styled-components"
 import deleteicon from "../../assets/deleteicon.svg"
 
-export default function Habit(){
+export default function Habit({ id, name, days }){
+    const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+
     return(
-        <HabitDiv>
-            <p>Ler 1 capítulo de livro</p>
+        <HabitDiv data-test="habit-container">
+            <p data-test="habit-name">{name}</p>
             <SelecionarDias>
-                <button>D</button>
-                <button>S</button>
-                <button>T</button>
-                <button>Q</button>
-                <button>Q</button>
-                <button>S</button>
-                <button>S</button>
+            {weekDays.map((day, index) => (
+                <button
+                    key={index}
+                    className={days.includes(index) ? "selected" : ""}
+                    data-test="habit-day"
+                >
+                    {day}
+                </button>
+            ))}
             </SelecionarDias>
-            <img src={deleteicon} alt="delete habit" />
+            <img src={deleteicon} alt="delete habit" data-test="habit-delete-btn"/>
         </HabitDiv>
     )
 }
@@ -29,6 +33,7 @@ const HabitDiv = styled.div`
     justify-content: space-around;
     padding: 13px 15px 13px 15px;
     position: relative;
+    margin-bottom: 10px;
 
     p{
         font-size: 20px;
@@ -60,6 +65,12 @@ const SelecionarDias = styled.div`
 
         :focus{
             outline: none;
+        }
+
+        &.selected {
+            background-color: #CFCFCF;
+            border-color: #CFCFCF;
+            color: #FFFFFF;
         }
     }
 `
