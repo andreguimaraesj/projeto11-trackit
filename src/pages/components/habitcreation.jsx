@@ -6,7 +6,6 @@ import { UserContext } from "../../constants/usercontext";
 import { useContext } from "react";
 
 export default function HabitCreation({setHabitCreationOn, setmyHabits}){
-    const isVisible = setHabitCreationOn;
     const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     const [habitName, setHabitName] = useState("");
     const [habitDays, setHabitDays] = useState([]);
@@ -44,7 +43,7 @@ export default function HabitCreation({setHabitCreationOn, setmyHabits}){
         .then(resp =>{
             setHabitName("");
             setHabitDays([]);
-            isVisible(false);
+            setHabitCreationOn(false);
             setmyHabits(prevHabits => [...prevHabits, resp.data]);
         })
         .catch(error =>{
@@ -79,7 +78,7 @@ export default function HabitCreation({setHabitCreationOn, setmyHabits}){
             })}
             </SelecionarDias>
             <CreationButtons>
-                <p onClick={ ()=> isVisible(false)} data-test="habit-create-cancel-btn">Cancelar</p>
+                <p onClick={ ()=> setHabitCreationOn(false)} data-test="habit-create-cancel-btn">Cancelar</p>
                 <button type="submit" data-test="habit-create-save-btn">Salvar</button>
             </CreationButtons>
         </CreationDiv>

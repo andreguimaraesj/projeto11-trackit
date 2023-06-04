@@ -15,7 +15,6 @@ export default function Registration(){
         e.preventDefault();
         axios.post(`${BASEURL}/auth/sign-up`, {email:email, name:name, image:image, password: password})
         .then(resp =>{
-            alert("Usuário criado com sucesso!")
             navigate(`/hoje`)})
         .catch(error =>{
             console.log(error.response.data.message)
