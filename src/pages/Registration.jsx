@@ -37,6 +37,10 @@ const FormsDiv = styled.form`
         border: 1px solid #D5D5D5;
         border-radius: 5px;
 
+        :focus{
+            outline: none;
+        }
+
         ::placeholder{
             font-size: 20px;
             color: #DBDBDB;
@@ -53,6 +57,10 @@ const FormsDiv = styled.form`
         font-size: 21px;
         color: #FFFFFF;
         cursor: pointer;
+
+        :focus{
+            outline: none;
+        }
     }
 `;
 const Link = styled.div`

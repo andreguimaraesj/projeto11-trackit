@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Header from "./components/header";
 import Menu from "./components/menu";
+import HabitCreation from "./components/habitcreation";
+import Habit from "./components/habit";
 
 export default function Habits(){
     return(
@@ -10,9 +12,11 @@ export default function Habits(){
                 <h2>Meus hábitos</h2>
                 <p>+</p>
             </CreateHabit>
+            <HabitCreation />
             <EmpyMessage>
                 Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
             </EmpyMessage>
+            <Habit />
             <Menu />
         </HabitsPage>
     )
