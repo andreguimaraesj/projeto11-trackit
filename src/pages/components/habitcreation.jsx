@@ -5,7 +5,7 @@ import { BASEURL } from "../../constants/urls";
 import { UserContext } from "../../constants/usercontext";
 import { useContext } from "react";
 
-export default function HabitCreation({setHabitCreationOn}){
+export default function HabitCreation({setHabitCreationOn, setmyHabits}){
     const isVisible = setHabitCreationOn;
     const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     const [habitName, setHabitName] = useState("");
@@ -45,6 +45,7 @@ export default function HabitCreation({setHabitCreationOn}){
             setHabitName("");
             setHabitDays([]);
             isVisible(false);
+            setmyHabits(prevHabits => [...prevHabits, resp.data]);
         })
         .catch(error =>{
             console.log(error.response.data.message)

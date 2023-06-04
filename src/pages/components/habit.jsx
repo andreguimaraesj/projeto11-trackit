@@ -1,8 +1,36 @@
 import styled from "styled-components"
+import { useContext, useState } from "react";
 import deleteicon from "../../assets/deleteicon.svg"
+import { BASEURL } from "../../constants/urls";
+import axios from "axios";
+import { UserContext } from "../../constants/usercontext";
 
-export default function Habit({ id, name, days }){
+export default function Habit({ id, name, days, setmyHabits }){
     const weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+    const { userInfo } = useContext(UserContext);
+
+    const config = {
+        headers: {
+            Authorization:`Bearer ${userInfo.token}`
+        }
+    }
+
+    function deleteHabit(habitId) {
+        const confirmDelete = window.confirm("Deseja realmente excluir?");
+
+        if (confirmDelete) {
+            const url = `${BASEURL}/habits/${habitId}`;
+            
+            axios.delete(url, config)
+            .then((response) => {
+                setmyHabits((prevHabits) => prevHabits.filter((habit) => habit.id !== habitId));
+            })
+            .catch((error) => {
+                console.log(error.response.data.message);
+                alert(error.response.data.message);
+            });
+        }
+    }
 
     return(
         <HabitDiv data-test="habit-container">
@@ -18,7 +46,12 @@ export default function Habit({ id, name, days }){
                 </button>
             ))}
             </SelecionarDias>
-            <img src={deleteicon} alt="delete habit" data-test="habit-delete-btn"/>
+            <img
+                src={deleteicon}
+                alt="delete habit"
+                onClick={() => deleteHabit(id)}
+                data-test="habit-delete-btn"
+            />
         </HabitDiv>
     )
 }
