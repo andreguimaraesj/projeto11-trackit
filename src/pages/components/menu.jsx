@@ -46,4 +46,5 @@ const Menudiv = styled.div`
 const ProgressDiv = styled.div`
     width: 90px;
     margin-top: -35px;
+    cursor: pointer;
 `;

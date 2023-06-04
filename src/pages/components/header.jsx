@@ -16,6 +16,7 @@ const HeaderDiv = styled.div`
     padding: 10px 20px 10px 20px;
     align-items: center;
     background: #126BA5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     display: flex;
     justify-content: space-between;
     position: fixed;
